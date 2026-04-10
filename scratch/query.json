@@ -1,0 +1,1 @@
+{"query": "{ categories(first: 20) { nodes { name slug count } } }"}

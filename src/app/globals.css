@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Open+Sans:wght@400;600;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #222222;
+  --brand-primary: #4db2ec; /* Newspaper Pro Blue */
+  --brand-secondary: #222222; 
+  --brand-accent: #000000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --font-roboto: "Roboto", sans-serif;
+  --font-open-sans: "Open Sans", sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-open-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-roboto), sans-serif;
+  font-weight: 700;
+}
+
+/* WordPress Content Styling */
+.wp-content p {
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.wp-content blockquote {
+  border-left: 4px solid var(--brand-primary);
+  padding: 1.5rem 0 1.5rem 2rem;
+  margin: 3rem 0;
+  font-style: italic;
+  font-size: 1.35rem;
+  color: #444;
+  background: #fcfcfc;
+}
+
+.wp-content h2, .wp-content h3 {
+  font-family: inherit;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.wp-content figure {
+  margin: 3rem 0;
+}
+
+.wp-content figcaption {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.wp-content img {
+  border-radius: 2px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+/* --- Universal Tap Feedback --- */
+a:active, button:active {
+  opacity: 0.7 !important;
+  transform: scale(0.98) !important;
+}
+
+/* --- Skeleton Shimmer Animation --- */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+/* --- Top Progress Bar for Loading --- */
+.top-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--brand-primary);
+  width: 0%;
+  z-index: 9999;
+  animation: loading-bar 2s ease-in-out forwards;
+}
+
+@keyframes loading-bar {
+  0% { width: 0%; }
+  30% { width: 70%; }
+  100% { width: 90%; }
+}
