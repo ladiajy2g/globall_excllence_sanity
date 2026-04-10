@@ -398,6 +398,7 @@ export async function getCategories() {
         nodes {
           name
           slug
+          parentDatabaseId
         }
       }
     }

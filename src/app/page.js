@@ -18,20 +18,34 @@ export default async function Home() {
 
   // 2. Determine Top 8 Categories with content
   // We prioritize some key slugs first, then fill with the rest of active categories
-  const prioritizedSlugs = ["news", "politics", "interview", "showbizplus", "society-and-fashion", "crime", "lifestyle", "events"];
-  
-  const activeCategories = (allCategories || []).filter(cat => 
-    cat?.slug && cat.slug !== "uncategorized" && cat.slug !== "featured"
+  const excludedSlugs = [
+    "anniversary-edition", "showbizplus", "anitas-diary", "body-soul", 
+    "destiny-by-scherey-m-momoh", "kwara-osun-gist", "oyo-ogun-gist"
+  ];
+  const prioritySlugs = ["news", "politics"];
+
+  const filteredCategories = (allCategories || []).filter(cat => 
+    cat?.slug && 
+    cat.slug !== "uncategorized" && 
+    cat.slug !== "featured" && 
+    !excludedSlugs.includes(cat.slug) &&
+    (!cat.parentDatabaseId || cat.parentDatabaseId === 0) // Exclude child categories
   );
 
-  const selectedSections = prioritizedSlugs
-    .map((slug) => {
-      const cat = activeCategories.find(c => c.slug === slug);
-      if (!cat) return null;
-      return { id: cat.slug, title: cat.name, slug: cat.slug };
-    })
-    .filter(Boolean)
-    .slice(0, 8); // Strictly limit to top 8 per user request
+  const sortedCategories = filteredCategories.sort((a, b) => {
+    const aPri = prioritySlugs.indexOf(a.slug);
+    const bPri = prioritySlugs.indexOf(b.slug);
+    if (aPri !== -1 && bPri !== -1) return aPri - bPri;
+    if (aPri !== -1) return -1;
+    if (bPri !== -1) return 1;
+    return 0;
+  });
+
+  const selectedSections = sortedCategories.slice(0, 8).map(cat => ({
+    id: cat.slug,
+    title: cat.name,
+    slug: cat.slug
+  }));
 
   // 3. Batch Fetch Posts for these sections
   const sectionPosts = await getHomeSections(selectedSections.map(s => ({

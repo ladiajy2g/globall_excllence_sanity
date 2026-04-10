@@ -63,22 +63,31 @@ export default function Footer({ latestPosts = [] }) {
           {/* About Column */}
           <div className="flex flex-col gap-6 text-center lg:text-left">
              <h3 className="text-sm font-black uppercase tracking-wider text-white">About Us</h3>
-             <p className="text-[14px] leading-relaxed text-white font-medium font-open-sans">
-                {siteConfig.identity.tagline}
-                <br /><br />
-                Global Excellence Magazine is the leading source for high-quality information and entertainment in Nigeria.
-             </p>
+             <div className="text-[14px] leading-relaxed text-white font-medium font-open-sans space-y-4">
+                <p>
+                  Global Excellence is a journal of information, education and entertainment, published by Global Excellence Communications Limited.
+                </p>
+                <div className="text-[12px] opacity-90 space-y-2">
+                  <p><span className="font-bold">PUBLISHER/EDITOR-IN-CHIEF</span> - Mayor Akinpelu</p>
+                  <p><span className="font-bold">EDITOR</span> - Folorunsho Hamsat...</p>
+                  <p><span className="font-bold">COLUMNISTS</span> - Akin Sokoya, Rahman Is’mail, Scherey Momoh, Wale Kareem...</p>
+                  <p><span className="font-bold">CORRESPONDENTS</span> - Akin Alade (Oyo-Ogun), Akinlolu Abayomi (Kwara-Osun)...</p>
+                  <p><span className="font-bold">CONTACT US</span>: excellence_global@yahoo.com</p>
+                  <p><span className="font-bold">hotlines</span>: 08055001842, 08051000485, 09011731849</p>
+                  <p className="pt-2 font-bold tracking-widest text-[13px]">ISSN No. 1595-1111</p>
+                </div>
+             </div>
           </div>
 
           {/* Follow Column */}
           <div className="flex flex-col gap-6 items-center lg:items-end text-center lg:text-right">
              <h3 className="text-sm font-black uppercase tracking-wider text-white">Follow Us</h3>
              <div className="flex gap-4">
-                <Link href={siteConfig.seo.facebookUrl} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
+                <Link href={siteConfig.seo.facebookUrl} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-all group">
+                  <svg className="w-5 h-5 transition-colors group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
                 </Link>
-                <Link href={"https://twitter.com/" + siteConfig.seo.twitterHandle.replace("@", "")} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" /></svg>
+                <Link href={"https://twitter.com/" + siteConfig.seo.twitterHandle.replace("@", "")} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-all group">
+                  <svg className="w-5 h-5 transition-colors group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" /></svg>
                 </Link>
              </div>
           </div>

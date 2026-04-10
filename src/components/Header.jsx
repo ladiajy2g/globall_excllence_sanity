@@ -62,8 +62,8 @@ const NavItem = ({ item, level = 0 }) => {
     <div className={`relative h-full flex items-center group/nav ${level > 0 ? "w-full" : ""}`}>
       <Link
         href={item.href}
-        className={`px-4 xl:px-5 h-full flex items-center text-[12px] font-black uppercase tracking-wider text-white hover:bg-gray-100 hover:text-brand-primary transition-all whitespace-nowrap
-        ${level > 0 ? "py-3 px-6 hover:bg-gray-50 !text-black border-b border-gray-100 last:border-0 w-full justify-between" : "text-white opacity-100"}
+        className={`px-4 xl:px-5 h-full flex items-center text-[12px] font-black uppercase tracking-wider text-white hover:bg-red-800 hover:text-white transition-all whitespace-nowrap
+        ${level > 0 ? "py-3 px-6 hover:bg-red-800 !text-black border-b border-gray-100 last:border-0 w-full justify-between" : "text-white opacity-100"}
         `}
       >
         <span className={level === 0 ? "text-white" : ""}>{item.name}</span>
