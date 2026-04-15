@@ -4,10 +4,13 @@ const API_URL = process.env.WORDPRESS_API_URL;
 import { mapOpaqueError } from "./security";
 
 async function fetchAPI(query, { variables } = {}) {
-  const headers = { 
+  const headers = {
     "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Referer": process.env.NEXT_PUBLIC_BASE_URL || API_URL
+    // Identifies this as a trusted internal SSR/ISR request to Vercel Firewall.
+    // Matched by the "Allow Internal ISR Fetches" bypass rule — must be first in the rule list.
+    "User-Agent": "GlobalExcellence-SSR/1.0 (Next.js ISR; +https://globalexcellenceonline.com)",
+    "Referer": process.env.NEXT_PUBLIC_BASE_URL || API_URL,
+    "X-Internal-Token": process.env.VERCEL_INTERNAL_TOKEN || "",
   };
 
   if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
