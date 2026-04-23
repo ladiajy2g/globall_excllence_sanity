@@ -1,4 +1,4 @@
-import { revalidateTag } from 'next-cache'
+import { revalidateTag } from 'next/cache'
 import { NextResponse } from 'next/server'
 import { parseBody } from 'next-sanity/webhook'
 
