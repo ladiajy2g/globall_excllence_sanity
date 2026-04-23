@@ -107,7 +107,12 @@ export async function getAdvertsByPlacement(placementSlug, first = 5) {
       adVideoUrl,
       "featuredImage": {
         "node": {
-          "sourceUrl": featuredImage.asset->url
+          "sourceUrl": featuredImage.asset->url,
+          "altText": featuredImage.alt,
+          "mediaDetails": {
+            "width": featuredImage.asset->metadata.dimensions.width,
+            "height": featuredImage.asset->metadata.dimensions.height
+          }
         }
       }
     }

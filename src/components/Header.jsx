@@ -11,7 +11,7 @@ const MobileNavItem = ({ item, level = 0, onNavLinkClick }) => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between border-b border-white/5">
+      <div className="group/mobile flex items-center justify-between border-b border-white/5">
         <Link
           href={item.href}
           onClick={() => {
@@ -19,14 +19,14 @@ const MobileNavItem = ({ item, level = 0, onNavLinkClick }) => {
           }}
           className={`${
             level === 0 ? "text-xl font-black" : "text-base font-bold"
-          } uppercase text-white hover:text-brand-primary transition-colors py-4 flex-1 tracking-tight`}
+          } uppercase text-white group-hover/mobile:text-black transition-colors py-4 flex-1 tracking-tight`}
         >
           {item.name}
         </Link>
         {hasChildren && (
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-4 text-white/50 hover:text-brand-primary transition-colors"
+            className="p-4 text-white/50 group-hover/mobile:text-black transition-colors"
           >
             <svg
               className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
@@ -180,19 +180,19 @@ export default function Header() {
 
       {/* MOBILE MENU OVERLAY */}
       {isMenuOpen && (
-        <div className="fixed inset-0 bg-black/98 z-[200] flex flex-col animate-in fade-in duration-300">
+        <div className="fixed inset-0 bg-[#dc2626] z-[200] flex flex-col animate-in fade-in duration-300">
            <div className="flex justify-between items-center p-6 border-b border-white/10">
-              <Logo className="h-8 invert grayscale" />
+              <Logo className="h-8" />
               <button 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-white hover:text-brand-primary transition-colors"
+                className="text-white hover:text-black transition-colors"
               >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
            </div>
-           <div className="flex-1 overflow-y-auto p-8 flex flex-col">
+           <div className="flex-1 overflow-y-auto p-8 flex flex-col text-white">
               {siteConfig.navigation.map((item, idx) => (
                 <MobileNavItem 
                   key={`${item.name}-${idx}`} 

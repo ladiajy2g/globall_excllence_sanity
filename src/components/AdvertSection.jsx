@@ -54,24 +54,24 @@ function AdSlot({ ad, isSidebar = false, aspectClass = "aspect-[3/1]" }) {
   const hasRealDimensions = img.mediaDetails?.width && img.mediaDetails?.height;
 
   const ImageEl = hasRealDimensions ? (
-    // Use exact dimensions from WordPress for zero layout shift
+    // Natural size — never upscaled, scales down to fit container width
     <Image
       src={img.sourceUrl}
       alt={img.altText || ad.title || "Advertisement"}
       width={img.mediaDetails.width}
       height={img.mediaDetails.height}
-      className="w-full h-auto object-cover hover:opacity-90 transition-opacity duration-300"
+      className="block max-w-full h-auto mx-auto rounded-md shadow-sm hover:opacity-90 transition-opacity duration-300"
       sizes={isSidebar ? "(max-width: 768px) 100vw, 360px" : "(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"}
       priority={false}
     />
   ) : (
-    // Fallback: fill container with aspect ratio
-    <div className={`group relative ${aspectClass} w-full overflow-hidden`}>
+    // Fallback (no dimensions known): fill container with aspect ratio
+    <div className={`group relative ${aspectClass} w-full overflow-hidden rounded-md shadow-sm`}>
       <Image
         src={img.sourceUrl}
         alt={img.altText || ad.title || "Advertisement"}
         fill
-        className="object-cover hover:opacity-90 transition-opacity duration-300"
+        className="object-contain hover:opacity-90 transition-opacity duration-300"
         sizes={isSidebar ? "(max-width: 768px) 100vw, 360px" : "100vw"}
       />
     </div>
@@ -79,17 +79,13 @@ function AdSlot({ ad, isSidebar = false, aspectClass = "aspect-[3/1]" }) {
 
   if (ad.adLink) {
     return (
-      <a href={ad.adLink} target="_blank" rel="noopener noreferrer" className="block w-full rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+      <a href={ad.adLink} target="_blank" rel="noopener noreferrer" className="block hover:opacity-95 transition-opacity duration-300">
         {ImageEl}
       </a>
     );
   }
 
-  return (
-    <div className="w-full rounded-md overflow-hidden shadow-sm">
-      {ImageEl}
-    </div>
-  );
+  return <div className="block">{ImageEl}</div>;
 }
 
 /**
