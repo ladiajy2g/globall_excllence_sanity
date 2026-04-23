@@ -72,7 +72,7 @@ export const siteConfig = {
       featured: "news",
       fresh: "politics",
       stacked: "crime",
-      popular: "showbizplus",
+      popular: "showbiz",
     },
     sections: [
       {
@@ -94,7 +94,7 @@ export const siteConfig = {
       {
         id: "section-3",
         title: "Showbiz",
-        categorySlug: "showbizplus",
+        categorySlug: "showbiz",
         layoutType: "horizontal",
         limit: 6,
         iconColor: "brand-primary",
@@ -119,7 +119,7 @@ export const siteConfig = {
       children: [
         { 
           name: "Showbiz", 
-          href: "/category/showbizplus",
+          href: "/category/showbiz",
           children: [
             { name: "Anita's Diary", href: "/category/anitas-diary" }
           ]

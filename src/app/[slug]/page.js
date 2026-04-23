@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getPostBySlug, getRelatedPosts, getAdjacentPosts, getLatestPosts } from "../../lib/wp-api";
+import { getPostBySlug, getCategoryPosts } from "../../lib/sanity-api";
 import { notFound } from "next/navigation";
 import Sidebar from "../../components/Sidebar";
 import AdvertSection from "../../components/AdvertSection";
@@ -8,8 +8,34 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 import PostNavigation from "../../components/PostNavigation";
 import RelatedStories from "../../components/RelatedStories";
 import FloatingShare from "../../components/FloatingShare";
-import { sanitizeHtml } from "../../lib/security";
 import { siteConfig } from "../../lib/site-config";
+import { PortableText } from '@portabletext/react'
+
+const portableTextComponents = {
+  types: {
+    image: ({ value }) => (
+      <div className="relative aspect-[16/10] my-8 overflow-hidden bg-gray-100">
+        <Image src={value.asset.url} alt="Article image" fill className="object-cover" />
+      </div>
+    ),
+    youtube: ({ value }) => {
+      const { url } = value
+      const id = url.includes('v=') ? url.split('v=')[1].split('&')[0] : url.split('/').pop()
+      return (
+        <div className="aspect-video my-8">
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${id}`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )
+    }
+  }
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -50,14 +76,8 @@ export default async function PostPage({ params }) {
   }
 
   const category = post.categories?.nodes[0];
-  const categoryIds = post.categories?.nodes.map(c => c.databaseId) || [];
-  
-  const [adjacentPosts, relatedPosts] = await Promise.all([
-    getAdjacentPosts(post.cursor),
-    getRelatedPosts(categoryIds, post.id)
-  ]);
-
-  const sanitizedContent = await sanitizeHtml(post.content);
+  const relatedData = category ? await getCategoryPosts(category.slug, 5) : { posts: [] };
+  const relatedPosts = relatedData.posts.filter(p => p.slug !== slug);
 
   const newsArticleJsonLd = {
     "@context": "https://schema.org",
@@ -81,31 +101,6 @@ export default async function PostPage({ params }) {
     "description": post.excerpt?.replace(/<[^>]*>/g, "").slice(0, 160)
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": siteConfig.seo.baseUrl
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": category?.name || "News",
-        "item": `${siteConfig.seo.baseUrl}/category/${category?.slug || 'news'}`
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": post.title,
-        "item": `${siteConfig.seo.baseUrl}/${post.slug}`
-      }
-    ]
-  };
-
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     try {
@@ -118,10 +113,6 @@ export default async function PostPage({ params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <FloatingShare post={post} />
@@ -138,7 +129,9 @@ export default async function PostPage({ params }) {
             </Link>
           )}
           
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] mb-8 text-[#222222] italic" dangerouslySetInnerHTML={{ __html: post.title }} />
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.1] mb-8 text-[#222222] italic">
+            {post.title}
+          </h1>
 
           <div className="flex flex-wrap items-center gap-6 text-[11px] font-black uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-8">
             <div className="flex items-center gap-3">
@@ -155,9 +148,6 @@ export default async function PostPage({ params }) {
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
               <span>{formatDate(post.date)}</span>
-            </div>
-            <div className="flex items-center gap-2 ml-auto hidden md:flex">
-               <span className="flex items-center gap-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> 1,240 Views</span>
             </div>
           </div>
         </div>
@@ -181,12 +171,23 @@ export default async function PostPage({ params }) {
                 />
               </div>
             )}
+
+            {/* Main Video Embed */}
+            {post.videoUrl && (
+              <div className="aspect-video">
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${post.videoUrl.split('v=')[1]?.split('&')[0] || post.videoUrl.split('/').pop()}`}
+                  title="Main YouTube video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
             
             <div className="prose max-w-none prose-p:font-open-sans prose-p:text-[17px] prose-p:leading-[1.8] prose-p:text-gray-700 prose-headings:font-black prose-headings:italic prose-headings:tracking-tight prose-a:text-brand-primary prose-a:no-underline hover:prose-a:underline">
-              <div 
-                className="wp-content"
-                dangerouslySetInnerHTML={{ __html: sanitizedContent || '<p>Content unavailable.</p>' }}
-              />
+               <PortableText value={post.body} components={portableTextComponents} />
             </div>
 
             {/* AUTHOR BOX */}
@@ -217,13 +218,13 @@ export default async function PostPage({ params }) {
                             <div className="relative aspect-video overflow-hidden bg-gray-100">
                                 <Image src={rp.featuredImage?.node?.sourceUrl || siteConfig.identity.logoUrl} alt={rp.title} fill className="object-cover transition-transform group-hover:scale-105" />
                             </div>
-                            <h4 className="text-[15px] font-black text-[#222222] leading-tight group-hover:text-red-600 transition-colors italic line-clamp-2" dangerouslySetInnerHTML={{ __html: rp.title }} />
+                            <h4 className="text-[15px] font-black text-[#222222] leading-tight group-hover:text-red-600 transition-colors italic line-clamp-2">
+                              {rp.title}
+                            </h4>
                         </Link>
                     ))}
                 </div>
             </div>
-
-            <PostNavigation previous={adjacentPosts.previous} next={adjacentPosts.next} />
           </div>
 
           {/* SIDEBAR (Right 4 Cols - Sticky) */}

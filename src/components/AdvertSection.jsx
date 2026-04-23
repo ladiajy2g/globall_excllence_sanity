@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getAdvertsByPlacement } from "../lib/wp-api";
+import { getAdvertsByPlacement } from "../lib/sanity-api";
 
 /**
  * Robustly extract YouTube video ID from any URL format

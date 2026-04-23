@@ -2,11 +2,31 @@ import HeroSection from "../components/HeroSection";
 import AdvertSection from "../components/AdvertSection";
 import TrendingTicker from "../components/TrendingTicker";
 import { FeaturedSection, GridSection, ListSection } from "../components/HomeSectionTypes";
-import { getHeroData, getHomeSections, getCategories } from "../lib/wp-api";
+import { getHeroData, getHomeSections, getCategories } from "../lib/sanity-api";
 import { siteConfig } from "../lib/site-config";
 import Link from "next/link";
 import Image from "next/image";
 import Sidebar from "../components/Sidebar";
+
+export const metadata = {
+  title: siteConfig.identity.name + " | " + siteConfig.identity.tagline,
+  description: siteConfig.seo.defaultDescription,
+  openGraph: {
+    title: siteConfig.identity.name,
+    description: siteConfig.seo.defaultDescription,
+    url: siteConfig.seo.baseUrl,
+    siteName: siteConfig.identity.name,
+    images: [
+      {
+        url: siteConfig.seo.baseUrl + siteConfig.identity.logoUrl,
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
 
 export const revalidate = 60; // Revalidate every minute
 

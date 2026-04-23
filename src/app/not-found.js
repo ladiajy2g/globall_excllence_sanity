@@ -1,10 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getLatestPosts } from "../lib/wp-api";
-import { siteConfig } from "../lib/site-config";
+import { getLatestPosts, getCategories } from "../lib/sanity-api";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { getCategories } from "../lib/wp-api";
 
 import BackButton from "../components/BackButton";
 

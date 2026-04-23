@@ -11,9 +11,9 @@ const categories = [
   { name: "News", href: "/category/news" },
   { name: "Politics", href: "/category/politics" },
   { name: "Crime", href: "/category/crime" },
-  { name: "Showbiz", href: "/category/showbizplus" },
-  { name: "World", href: "/category/world" },
-  { name: "Sports", href: "/category/sport" },
+  { name: "Showbiz", href: "/category/showbiz" },
+  { name: "Cover", href: "/category/cover" },
+  { name: "Vibes", href: "/category/vibes" },
   { name: "Society", href: "/category/society-and-fashion" },
   { name: "Interview", href: "/category/interview" },
 ];

@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AdvertSection from "../components/AdvertSection";
 import { siteConfig } from "../lib/site-config";
-import { getCategories, getLatestPosts } from "../lib/wp-api";
+import { getCategories, getLatestPosts } from "../lib/sanity-api";
 
 const roboto = Roboto({
   variable: "--font-roboto",

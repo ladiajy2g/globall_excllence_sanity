@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryPosts } from "../../../lib/wp-api";
+import { getCategoryPosts } from "../../../lib/sanity-api";
 import { notFound } from "next/navigation";
 import Sidebar from "../../../components/Sidebar";
 import Breadcrumbs from "../../../components/Breadcrumbs";

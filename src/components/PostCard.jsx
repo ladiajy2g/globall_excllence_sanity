@@ -14,7 +14,8 @@ export default function PostCard({
   if (!post) return null;
 
   const { title, slug, date, excerpt, author, featuredImage, categories } = post;
-  const imageUrl = featuredImage?.node?.sourceUrl || "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800";
+  const imageUrl = featuredImage?.node?.sourceUrl || siteConfig.identity.logoUrl;
+  const categoryName = categories?.nodes?.[0]?.name || "Regular";
 
   if (variant === "overlay") {
     return (

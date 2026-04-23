@@ -1,4 +1,4 @@
-import { getAllPostSlugs, getCategories } from "../lib/wp-api";
+import { getAllPostSlugs, getCategories } from "../lib/sanity-api";
 import { siteConfig } from "../lib/site-config";
 
 export const revalidate = 3600; // Cache sitemap for 1 hour

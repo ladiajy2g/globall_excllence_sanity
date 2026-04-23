@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getLatestPosts } from "../lib/wp-api";
+import { getLatestPosts } from "../lib/sanity-api";
 import AdvertSection from "./AdvertSection";
 
 export default async function Sidebar({ showAdverts = true }) {

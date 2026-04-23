@@ -1,4 +1,4 @@
-import { getCategoryPosts } from "../../lib/wp-api";
+import { getCategoryPosts } from "../../lib/sanity-api";
 import Sidebar from "../../components/Sidebar";
 import PostCard from "../../components/PostCard";
 
