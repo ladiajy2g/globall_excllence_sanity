@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getPostBySlug, getCategoryPosts } from "../../lib/sanity-api";
+import { client } from "../../lib/sanity";
 import { notFound } from "next/navigation";
 import Sidebar from "../../components/Sidebar";
 import AdvertSection from "../../components/AdvertSection";
@@ -66,6 +67,13 @@ export async function generateMetadata({ params }) {
 }
 
 export const revalidate = 300; // 5 minutes
+
+export async function generateStaticParams() {
+  const posts = await client.fetch(`*[_type == "post"] | order(publishedAt desc) [0..50] { "slug": slug.current }`);
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export default async function PostPage({ params }) {
   const { slug } = await params;

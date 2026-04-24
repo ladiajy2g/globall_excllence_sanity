@@ -28,7 +28,7 @@ export const metadata = {
   },
 };
 
-export const revalidate = 60; // Revalidate every minute
+export const revalidate = 300; // Revalidate every 5 minutes to save API costs
 
 export default async function Home() {
   const { homeLayout } = siteConfig;

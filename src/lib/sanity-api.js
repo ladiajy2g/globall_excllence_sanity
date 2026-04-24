@@ -1,4 +1,5 @@
 import { client } from './sanity'
+import { cache } from 'react'
 
 const postFields = `
   title,
@@ -24,7 +25,7 @@ const postFields = `
   }
 `
 
-export async function getHeroData(config = {}) {
+export const getHeroData = cache(async function getHeroData(config = {}) {
   const { 
     featured = "news",
     fresh = "politics", 
@@ -51,9 +52,9 @@ export async function getHeroData(config = {}) {
     popular: data.popular || [],
     ticker: data.ticker || [],
   }
-}
+})
 
-export async function getHomeSections(sections = []) {
+export const getHomeSections = cache(async function getHomeSections(sections = []) {
   const result = {}
   // Fetch all sections in parallel
   const sectionQueries = sections.map(s => `
@@ -64,13 +65,13 @@ export async function getHomeSections(sections = []) {
 
   const data = await client.fetch(`{ ${sectionQueries} }`)
   return data
-}
+})
 
-export async function getCategories() {
+export const getCategories = cache(async function getCategories() {
   return client.fetch(`*[_type == "category"]{ "name": title, "slug": slug.current }`)
-}
+})
 
-export async function getPostBySlug(slug) {
+export const getPostBySlug = cache(async function getPostBySlug(slug) {
   return client.fetch(`
     *[_type == "post" && slug.current == $slug][0]{
       title,
@@ -97,9 +98,9 @@ export async function getPostBySlug(slug) {
       }
     }
   `, { slug })
-}
+})
 
-export async function getAdvertsByPlacement(placementSlug, first = 5) {
+export const getAdvertsByPlacement = cache(async function getAdvertsByPlacement(placementSlug, first = 5) {
   return client.fetch(`
     *[_type == "advert" && placement == $placement] | order(_createdAt desc) [0..${first - 1}]{
       title,
@@ -117,9 +118,9 @@ export async function getAdvertsByPlacement(placementSlug, first = 5) {
       }
     }
   `, { placement: placementSlug })
-}
+})
 
-export async function getCategoryPosts(slug, first = 12) {
+export const getCategoryPosts = cache(async function getCategoryPosts(slug, first = 12) {
   // --- Slug Mapping for Pretty URLs (Match WordPress Legacy) ---
   const slugMap = {
     "cover": "cover-stories",
@@ -139,16 +140,17 @@ export async function getCategoryPosts(slug, first = 12) {
     name: category?.title || slug,
     posts: posts || []
   }
-}
+})
 
-export async function getLatestPosts(first = 5) {
+export const getLatestPosts = cache(async function getLatestPosts(first = 5) {
   return client.fetch(`
     *[_type == "post"] | order(publishedAt desc) [0..${first - 1}] {
       ${postFields}
     }
   `)
-}
+})
 
-export async function getAllPostSlugs() {
+export const getAllPostSlugs = cache(async function getAllPostSlugs() {
   return client.fetch(`*[_type == "post"]{ "slug": slug.current, "date": publishedAt }`)
-}
+})
+

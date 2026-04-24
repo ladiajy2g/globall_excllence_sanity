@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getCategoryPosts } from "../../../lib/sanity-api";
+import { getCategoryPosts, getCategories } from "../../../lib/sanity-api";
 import { notFound } from "next/navigation";
 import Sidebar from "../../../components/Sidebar";
 import Breadcrumbs from "../../../components/Breadcrumbs";
@@ -8,6 +8,20 @@ import PostCard from "../../../components/PostCard";
 import { siteConfig } from "../../../lib/site-config";
 
 export const revalidate = 300; // 5 minutes
+
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  
+  // Slug mapping for pretty URLs
+  const slugMap = {
+    "cover-stories": "cover",
+    "society": "society-and-fashion"
+  };
+
+  return (categories || []).map((cat) => ({
+    slug: slugMap[cat.slug] || cat.slug,
+  }));
+}
 
 export default async function CategoryPage({ params }) {
   const { slug } = await params;

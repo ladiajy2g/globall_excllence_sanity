@@ -5,7 +5,7 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2023-05-03',
-  useCdn: false, // Must be false for ISR/On-demand revalidation to work reliably
+  useCdn: true, // Switched to true to use the Edge CDN and save costs. On-demand revalidation still works via webhooks.
   next: {
     tags: ['sanity']
   }
