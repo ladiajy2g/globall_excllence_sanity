@@ -63,6 +63,17 @@ const nextConfig = {
         destination: "/:path*",
         permanent: true,
       },
+      // 3. Dead WordPress category — closest live equivalent
+      {
+        source: "/category/lifestyle",
+        destination: "/category/society-and-fashion",
+        permanent: true,
+      },
+      {
+        source: "/category/lifestyle/:path*",
+        destination: "/category/society-and-fashion",
+        permanent: true,
+      },
     ];
   },
   async headers() {

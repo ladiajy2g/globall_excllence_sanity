@@ -6,6 +6,8 @@ import Footer from "../components/Footer";
 
 import BackButton from "../components/BackButton";
 
+export const revalidate = 3600;
+
 export default async function NotFound() {
   const [latestPosts, footerPosts, categories] = await Promise.all([
     getLatestPosts(6),
